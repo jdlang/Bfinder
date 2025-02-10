@@ -555,7 +555,7 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 //////////////////////////////////////////////////////////////////////////
                 // RECONSTRUCTION: K+pi-
                 //////////////////////////////////////////////////////////////////////////
-                float d0_mass_window[2] = {D0_MASS-0.2,D0_MASS+0.2};
+                float d0_mass_window[2] = {D0_MASS-0.4,D0_MASS+0.4};
 
                 if(Dchannel_[0] == 1){
                   std::vector< std::vector< std::pair<float, int> > > PermuVec;
