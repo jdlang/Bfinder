@@ -61,6 +61,8 @@ public:
   float   DsvpvDisErr[MAX_XB];
   float   DsvpvDistance_2D[MAX_XB];
   float   DsvpvDisErr_2D[MAX_XB];
+  float   Dip3d[MAX_XB];
+  float   Dip3derr[MAX_XB];
   float   Ddca[MAX_XB];
   float   DlxyBS[MAX_XB];
   float   DlxyBSErr[MAX_XB];
@@ -389,6 +391,8 @@ public:
     dnt->Branch("DsvpvDisErr",DsvpvDisErr,"DsvpvDisErr[Dsize]/F");
     dnt->Branch("DsvpvDistance_2D",DsvpvDistance_2D,"DsvpvDistance_2D[Dsize]/F");
     dnt->Branch("DsvpvDisErr_2D",DsvpvDisErr_2D,"DsvpvDisErr_2D[Dsize]/F");
+    dnt->Branch("Dip3D",Dip3d,"Dip3d[Dsize]/F");
+    dnt->Branch("Dip3derr",Dip3derr,"Dip3derr[Dsize]/F");
     dnt->Branch("Ddca",Ddca,"Ddca[Dsize]/F");
     dnt->Branch("DlxyBS",DlxyBS,"DlxyBS[Dsize]/F");
     dnt->Branch("DlxyBSErr",DlxyBSErr,"DlxyBSErr[Dsize]/F");
@@ -1306,6 +1310,8 @@ public:
     DsvpvDisErr[typesize] = DInfo->svpvDisErr[j];
     DsvpvDistance_2D[typesize] = DInfo->svpvDistance_2D[j];
     DsvpvDisErr_2D[typesize] = DInfo->svpvDisErr_2D[j];
+    Dip3d[typesize] = DInfo->ip3d[j];
+    Dip3derr[typesize] = DInfo->ip3derr[j];
     Ddca[typesize] = DInfo->svpvDistance[j]*TMath::Sin(DInfo->alpha[j]);
     //# add Ddca err & Ddca significance 
 

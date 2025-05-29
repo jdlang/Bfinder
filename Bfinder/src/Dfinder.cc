@@ -151,7 +151,7 @@ private:
 void Dfinder::beginJob()
 {//{{{
   root = fs->make<TTree>("root","root");
-  ntD1 = fs->make<TTree>("ntDkpi","");           Dntuple->buildDBranch(ntD1, true);
+  ntD1 = fs->make<TTree>("ntDkpi","");           Dntuple->buildDBranch(ntD1, true, true);
   ntD2 = fs->make<TTree>("ntDkpipi","");         Dntuple->buildDBranch(ntD2);
   ntD3 = fs->make<TTree>("ntDkpipipi","");       Dntuple->buildDBranch(ntD3);
   ntD4 = fs->make<TTree>("ntDPhikkpi","");       Dntuple->buildDBranch(ntD4);
@@ -429,7 +429,7 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //////////////////////////////////////////////////////////////////////////
       // RECONSTRUCTION: K+pi-
       //////////////////////////////////////////////////////////////////////////
-      float d0_mass_window[2] = {D0_MASS-0.2,D0_MASS+0.2};
+      float d0_mass_window[2] = {D0_MASS-0.4,D0_MASS+0.4};
 
       if(Dchannel_[0] == 1){
         std::vector< std::vector< std::pair<float, int> > > PermuVec;
@@ -438,8 +438,6 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         std::pair<float, int> tk2 = std::make_pair(-PION_MASS, 0);
         InVec.push_back(tk1);
         InVec.push_back(tk2);
-        // std::cout<<"InVec:"<<std::endl;
-        // for (auto p : InVec) { std::cout<<" "<<p.first<<", "<<p.second<<std::endl; }
         PermuVec = GetPermu(InVec);
         PermuVec = DelDuplicate(PermuVec);
         for(unsigned int i = 0; i < PermuVec.size(); i++){
@@ -459,10 +457,10 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         InVec.push_back(tk2);
         PermuVec = GetPermu(InVec);
         PermuVec = DelDuplicate(PermuVec);
-        // for(unsigned int i = 0; i < PermuVec.size(); i++){
-        //   Dfinder::BranchOutNTk( DInfo, input_tracks, thePrimaryV, isNeededTrackIdx, D_counter, d0_mass_window, PermuVec[i], -1, -1, false, false, 2, 0);
-        // }
-        Dfinder::BranchOutNTk( DInfo, input_tracks, thePrimaryV, isNeededTrackIdx, D_counter, d0_mass_window, InVec, -1, -1, false, false, 2, 1);
+        for(unsigned int i = 0; i < PermuVec.size(); i++){
+          Dfinder::BranchOutNTk( DInfo, input_tracks, thePrimaryV, isNeededTrackIdx, D_counter, d0_mass_window, PermuVec[i], -1, -1, false, false, 2, 0);
+        }
+        // Dfinder::BranchOutNTk( DInfo, input_tracks, thePrimaryV, isNeededTrackIdx, D_counter, d0_mass_window, InVec, -1, -1, false, false, 2, 1);
       }
       //////////////////////////////////////////////////////////////////////////
       // RECONSTRUCTION: K-pi+pi+
@@ -1618,7 +1616,6 @@ void Dfinder::TkCombinationResFast(
 //BranchOutNTk{{{
 void Dfinder::BranchOutNTk(//input 2~4 tracks
                            DInfoBranches &DInfo, 
-                           // edm::View<pat::PackedCandidate> input_tracks, 
                            std::vector<const reco::Track*> input_tracks, 
                            reco::Vertex thePrimaryV,
                            std::vector<int> isNeededTrackIdx,
@@ -1662,6 +1659,10 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
   RefCountedKinematicParticle     tktkRes_VFP;
   RefCountedKinematicVertex       tktkRes_VFPvtx;
 
+  const MagneticField *field = bField.product();
+  AnalyticalImpactPointExtrapolator extrapolator(field);
+  TrajectoryStateOnSurface tsos;
+  
   TLorentzVector v4_tk;
   // std::vector<TLorentzVector> tktk_4vecs;//fitted tks
   TLorentzVector tktk_4vec;//fitted D
@@ -1677,7 +1678,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
 
   for(int i = 0; i < int(selectedTkhidxSet.size()); i++){
     if (DInfo.size >= MAX_XB) break;
-
+    
     //clear before using
     v4_tk.Clear();
     // tktk_4vecs.clear();
@@ -1768,6 +1769,8 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
       tktk_VFT = tktk_fitter.fit(tktk_candidate); // this line same as previous one?
     }
 
+    // std::cout<<"=> "<<i<<std::endl;
+
     if(!tktk_VFT->isValid()) continue;
 
     tktk_VFT->movePointerToTheTop(); // KinematicTree.cc , make the Tree accessible, pointer to particle, and daughters
@@ -1775,7 +1778,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
     tktk_VFPvtx = tktk_VFT->currentDecayVertex();
     if (!tktk_VFPvtx->vertexIsValid()) continue;
 
-    double chi2_prob_tktk = TMath::Prob(tktk_VFPvtx->chiSquared(),tktk_VFPvtx->degreesOfFreedom());
+    double chi2_prob_tktk = TMath::Prob(tktk_VFPvtx->chiSquared(),tktk_VFPvtx->degreesOfFreedom()); 
     if(chi2_prob_tktk < VtxChiProbCut_[Dchannel_number-1]) continue;
 
     tktkCands  = tktk_VFT->finalStateParticles(); // these determine the order of output - rftk
@@ -1912,11 +1915,25 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
 
     VertexDistance3D a3d;
     //https://github.com/cms-sw/cmssw/blob/CMSSW_7_5_0/RecoVertex/VertexTools/src/VertexDistance3D.cc
-    DInfo.svpvDistance[DInfo.size] = a3d.distance(thePrimaryV,tktk_VFPvtx->vertexState()).value();
+    DInfo.svpvDistance[DInfo.size] = a3d.distance(thePrimaryV,tktk_VFPvtx->vertexState()).value(); 
     DInfo.svpvDisErr[DInfo.size] = a3d.distance(thePrimaryV,tktk_VFPvtx->vertexState()).error();
     if( DInfo.pt[DInfo.size] <= dCutSeparating_PtVal_[Dchannel_number-1] && (DInfo.svpvDistance[DInfo.size]/DInfo.svpvDisErr[DInfo.size]) < svpvDistanceCut_lowptD_[Dchannel_number-1]) continue;
     else if( DInfo.pt[DInfo.size] > dCutSeparating_PtVal_[Dchannel_number-1] && (DInfo.svpvDistance[DInfo.size]/DInfo.svpvDisErr[DInfo.size]) < svpvDistanceCut_highptD_[Dchannel_number-1]) continue;
 
+    tsos = extrapolator.extrapolate(tktk_VFP->currentState().freeTrajectoryState(),
+                                    RecoVertex::convertPos(thePrimaryV.position()));
+    //std::pair<bool, Measurement1D> cur3DIP;
+    Measurement1D cur3DIP;
+    
+    GlobalPoint refPoint          = tsos.globalPosition();
+    GlobalError refPointErr       = tsos.cartesianError().position();
+    GlobalPoint vertexPosition    = RecoVertex::convertPos(thePrimaryV.position());
+    GlobalError vertexPositionErr = RecoVertex::convertError(thePrimaryV.error());
+    cur3DIP =  (a3d.distance(VertexState(vertexPosition,vertexPositionErr), VertexState(refPoint, refPointErr))); //IPTools::absoluteImpactParameter3D(tsos, thePrimaryV, a3d);
+
+    DInfo.ip3d[DInfo.size]            = cur3DIP.value();
+    DInfo.ip3derr[DInfo.size]         = cur3DIP.error();
+    
     reco::Vertex::Point vp1(thePrimaryV.position().x(), thePrimaryV.position().y(), 0.);
     reco::Vertex::Point vp2(tktk_VFPvtx->vertexState().position().x(), tktk_VFPvtx->vertexState().position().y(), 0.);
     ROOT::Math::SVector<double, 6> sv1(thePrimaryV.covariance(0,0), thePrimaryV.covariance(0,1), thePrimaryV.covariance(1,1), 0., 0., 0.);

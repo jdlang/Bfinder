@@ -672,6 +672,8 @@ public:
   float  svpvDisErr[MAX_XB];
   float  svpvDistance_2D[MAX_XB];
   float  svpvDisErr_2D[MAX_XB];
+  // float  ip3d[MAX_XB];
+  // float  ip3derr[MAX_XB];
   float  MaxDoca[MAX_XB];
   float  vtxX[MAX_XB];
   float  vtxY[MAX_XB];
@@ -766,6 +768,8 @@ public:
     root->Branch("BInfo.svpvDisErr"       , svpvDisErr     , "BInfo.svpvDisErr[BInfo.size]/F"	);
     root->Branch("BInfo.svpvDistance_2D"  , svpvDistance_2D, "BInfo.svpvDistance_2D[BInfo.size]/F"	);
     root->Branch("BInfo.svpvDisErr_2D"    , svpvDisErr_2D  , "BInfo.svpvDisErr_2D[BInfo.size]/F"	);
+    // root->Branch("BInfo.ip3d"  , ip3d, "BInfo.ip3d[BInfo.size]/F"	);
+    // root->Branch("BInfo.ip3derr"    , ip3derr  , "BInfo.ip3derr[BInfo.size]/F"	);
     root->Branch("BInfo.MaxDoca"          , MaxDoca        , "BInfo.MaxDoca[BInfo.size]/F"	);
     root->Branch("BInfo.vtxX"             , vtxX           , "BInfo.vtxX[BInfo.size]/F"		);
     root->Branch("BInfo.vtxY"             , vtxY           , "BInfo.vtxY[BInfo.size]/F"		);
@@ -881,6 +885,8 @@ public:
     root->SetBranchAddress("BInfo.svpvDisErr"      ,svpvDisErr   	);
     root->SetBranchAddress("BInfo.svpvDistance_2D" ,svpvDistance_2D   	);
     root->SetBranchAddress("BInfo.svpvDisErr_2D"   ,svpvDisErr_2D   	);
+    // root->SetBranchAddress("BInfo.ip3d" ,ip3d   	);
+    // root->SetBranchAddress("BInfo.ip3derr"   ,ip3derr   	);
     root->SetBranchAddress("BInfo.MaxDoca"         ,MaxDoca   	);
     root->SetBranchAddress("BInfo.vtxX"            ,vtxX       	);
     root->SetBranchAddress("BInfo.vtxY"            ,vtxY      	);
@@ -1011,6 +1017,8 @@ public:
   float  svpvDisErr[MAX_XB];
   float  svpvDistance_2D[MAX_XB];
   float  svpvDisErr_2D[MAX_XB];
+  float  ip3d[MAX_XB];
+  float  ip3derr[MAX_XB];
   float  MaxDoca[MAX_XB];
   float  vtxX[MAX_XB];
   float  vtxY[MAX_XB];
@@ -1086,6 +1094,8 @@ public:
     root->Branch("DInfo.svpvDisErr"       , svpvDisErr        , "DInfo.svpvDisErr[DInfo.size]/F"	);
     root->Branch("DInfo.svpvDistance_2D"  , svpvDistance_2D   , "DInfo.svpvDistance_2D[DInfo.size]/F"	);
     root->Branch("DInfo.svpvDisErr_2D"    , svpvDisErr_2D     , "DInfo.svpvDisErr_2D[DInfo.size]/F"	);
+    root->Branch("DInfo.ip3d"             , ip3d              , "DInfo.ip3d[DInfo.size]/F"	);
+    root->Branch("DInfo.ip3derr"          , ip3derr           , "DInfo.ip3derr[DInfo.size]/F"	);
     root->Branch("DInfo.MaxDoca"          , MaxDoca           , "DInfo.MaxDoca[DInfo.size]/F"	);
     root->Branch("DInfo.vtxX"             , vtxX              , "DInfo.vtxX[DInfo.size]/F"	);
     root->Branch("DInfo.vtxY"             , vtxY              , "DInfo.vtxY[DInfo.size]/F"	);
@@ -1205,6 +1215,8 @@ public:
     root->SetBranchAddress("DInfo.svpvDisErr"      ,svpvDisErr   	);
     root->SetBranchAddress("DInfo.svpvDistance_2D" ,svpvDistance_2D   	);
     root->SetBranchAddress("DInfo.svpvDisErr_2D"   ,svpvDisErr_2D   	);
+    root->SetBranchAddress("DInfo.ip3d"            ,ip3d   	);
+    root->SetBranchAddress("DInfo.ip3derr"         ,ip3derr   	);
     root->SetBranchAddress("DInfo.MaxDoca"         ,MaxDoca   	);
     root->SetBranchAddress("DInfo.vtxX"            ,vtxX    );
     root->SetBranchAddress("DInfo.vtxY"            ,vtxY    );
@@ -1215,7 +1227,7 @@ public:
     root->SetBranchAddress("DInfo.vtxYXErr"        ,vtxYXErr   );
     root->SetBranchAddress("DInfo.vtxZXErr"        ,vtxZXErr   );
     root->SetBranchAddress("DInfo.vtxZYErr"        ,vtxZYErr   );
-    root->SetBranchAddress("DInfo.vtxdof"	       ,vtxdof	);
+    root->SetBranchAddress("DInfo.vtxdof"	   ,vtxdof	);
     root->SetBranchAddress("DInfo.vtxchi2"         ,vtxchi2 );
 
     root->SetBranchAddress("DInfo.rftk1_index"     ,rftk1_index   	);
