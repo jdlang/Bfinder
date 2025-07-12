@@ -23,7 +23,11 @@ using namespace std;
 
 //function to construct TLorentzVector with data (most common-seen format can use)
 template< typename T >
-void FillLVec(const T* particle, TLorentzVector& vec, double mass)
+//void FillLVec(const T* particle, TLorentzVector& vec, double mass)
+//{
+//        vec.SetPxPyPzE(particle->px(), particle->py(), particle->pz(), sqrt(particle->p()*particle->p()+mass*mass));
+//}
+void FillLVec(const T* particle, ROOT::Math::PxPyPzMVector& vec, double mass)
 {
         vec.SetPxPyPzE(particle->px(), particle->py(), particle->pz(), sqrt(particle->p()*particle->p()+mass*mass));
 }

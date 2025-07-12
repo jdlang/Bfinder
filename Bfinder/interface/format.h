@@ -41,6 +41,17 @@
 
 //#include "Bfinder/Bfinder/interface/TriggerBooking.h"
 #include <TLorentzVector.h>
+#include <TVector3.h>
+// Replaces legacy TLorentzVector and TVector3
+#include <Math/Vector4D.h>
+#include <Math/Vector3D.h>
+#include <Math/GenVector/LorentzVector.h>
+#include <Math/GenVector/PxPyPzE4D.h>
+#include <Math/GenVector/PxPyPzM4D.h>
+#include <Math/GenVector/PtEtaPhiE4D.h>
+#include <Math/GenVector/PtEtaPhiM4D.h>
+#include <Math/VectorUtil.h>
+
 #include <TTree.h>
 #include <TBranch.h>
 #include <TH1.h>
@@ -52,7 +63,6 @@
 #include <TMath.h>
 #include <TString.h>
 #include <TNtuple.h>
-#include <TVector3.h>
 #include "TMVA/Tools.h"
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
@@ -111,7 +121,7 @@ public:
   int	    BxNo;
   int	    LumiNo;
   int	    Orbit;
-  bool	McFlag;
+  bool	  McFlag;
   int     nBX;
   int     BXPU[MAX_BX];
   int     nPU[MAX_BX];

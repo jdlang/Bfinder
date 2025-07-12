@@ -1203,29 +1203,30 @@ void Dfinder::TkCombinationPermutation(
   int tk5_hindex = -1;
 
   std::vector<int> selectedTkhidx;
-  TLorentzVector v4_D, v4_Res, v4_NonRes;//unfitted D, resonance, non-resonance track 4 vectors sum 
-  TLorentzVector v4_tk1, v4_tk2, v4_tk3, v4_tk4, v4_tk5;// all tracks
-  TLorentzVector v4_Restk1, v4_Restk2, v4_Restk3, v4_Restk4, v4_Restk5;// resonance tracks
-  TLorentzVector v4_NonRestk1, v4_NonRestk2, v4_NonRestk3, v4_NonRestk4, v4_NonRestk5;// non-resonance tracks, i.e., all - resonance tracks
+  ROOT::Math::PxPyPzEVector v4_D, v4_Res, v4_NonRes;//unfitted D, resonance, non-resonance track 4 vectors sum
+  ROOT::Math::PxPyPzEVector v4_tk1, v4_tk2, v4_tk3, v4_tk4, v4_tk5;// all tracks
+  ROOT::Math::PxPyPzEVector v4_Restk1, v4_Restk2, v4_Restk3, v4_Restk4, v4_Restk5;// resonance tracks
+  ROOT::Math::PxPyPzEVector v4_NonRestk1, v4_NonRestk2, v4_NonRestk3, v4_NonRestk4, v4_NonRestk5;// non-resonance tracks, i.e., all - resonance tracks
   //for(edm::View<pat::PackedCandidate>::const_iterator tk_it1=input_tracks.begin();
   //        tk_it1 != input_tracks.end() ; tk_it1++){
   for(int tk1idx = 0; tk1idx < (int)isNeededTrackIdx.size(); tk1idx++){
-    v4_D.Clear(); v4_Res.Clear();
+    v4_D.SetPxPyPzE(0,0,0,0);
+    v4_Res.SetPxPyPzE(0,0,0,0);
     //tk1_hindex = int(tk_it1 - input_tracks.begin());
     //if(tk1_hindex>=int(isNeededTrack.size())) break;
     //if(!isNeededTrack[tk1_hindex]) continue;
     //if(tk_it1->charge()*TkMassCharge[0].first<0) continue;
     tk1_hindex = isNeededTrackIdx[tk1idx];
     if(input_tracks[tk1_hindex]->charge()*TkMassCharge[0].first<0) continue;
-    v4_tk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+    v4_tk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
     v4_D.SetPxPyPzE((v4_tk1.Px()), (v4_tk1.Py()), (v4_tk1.Pz()), (v4_tk1.E()));
     if(TkMassCharge[0].second==1){
-      v4_Restk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
-      v4_NonRestk1.SetXYZM(0,0,0,0);
+      v4_Restk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+      v4_NonRestk1.SetPxPyPzE(0,0,0,0);
     }
     else{    
-      v4_Restk1.SetXYZM(0,0,0,0);
-      v4_NonRestk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+      v4_Restk1.SetPxPyPzE(0,0,0,0);
+      v4_NonRestk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
     }
     v4_Res.SetPxPyPzE(v4_Restk1.Px(), v4_Restk1.Py(), v4_Restk1.Pz(), v4_Restk1.E());
     v4_NonRes.SetPxPyPzE(v4_NonRestk1.Px(), v4_NonRestk1.Py(), v4_NonRestk1.Pz(), v4_NonRestk1.E());
@@ -1240,26 +1241,26 @@ void Dfinder::TkCombinationPermutation(
       tk2_hindex = isNeededTrackIdx[tk2idx];
       if(input_tracks[tk2_hindex]->charge()*TkMassCharge[1].first<0) continue;
       if(tk2_hindex==tk1_hindex) continue;
-      v4_tk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+      v4_tk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
       v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px()), (v4_tk1.Py() + v4_tk2.Py()), (v4_tk1.Pz() + v4_tk2.Pz()), (v4_tk1.E() + v4_tk2.E()));
       if(TkMassCharge[1].second==1){
-        v4_Restk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
-        v4_NonRestk2.SetXYZM(0,0,0,0);
+        v4_Restk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+        v4_NonRestk2.SetPxPyPzE(0,0,0,0);
       }
       else{ 
-        v4_Restk2.SetXYZM(0,0,0,0);
-        v4_NonRestk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+        v4_Restk2.SetPxPyPzE(0,0,0,0);
+        v4_NonRestk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
       }
       v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px()), (v4_Restk1.Py() + v4_Restk2.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz()), (v4_Restk1.E() + v4_Restk2.E()));
       v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E()));
       if(TkMassCharge.size()==2){
         //cut mass window before fit
         if(tktkRes_mass > 0) {
-          if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+          if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
           if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
           //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
         }
-        if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+        if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
         if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
         //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
         if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1274,27 +1275,27 @@ void Dfinder::TkCombinationPermutation(
         if(input_tracks[tk3_hindex]->charge()*TkMassCharge[2].first<0) continue;
         if(tk3_hindex==tk1_hindex) continue;
         if(tk3_hindex==tk2_hindex) continue;
-        v4_tk3.SetXYZM(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+        v4_tk3.SetPxPyPzE(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
         v4_D = v4_tk1 + v4_tk2 + v4_tk3;
         v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E()));
         if(TkMassCharge[2].second==1){ 
-          v4_Restk3.SetXYZM(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
-          v4_NonRestk3.SetXYZM(0,0,0,0);
+          v4_Restk3.SetPxPyPzE(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+          v4_NonRestk3.SetPxPyPzE(0,0,0,0);
         }
         else{ 
-          v4_Restk3.SetXYZM(0,0,0,0);
-          v4_NonRestk3.SetXYZM(input_tracks[tk3_hindex]->p(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+          v4_Restk3.SetPxPyPzE(0,0,0,0);
+          v4_NonRestk3.SetPxPyPzE(input_tracks[tk3_hindex]->p(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
         }
         v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E()));
         v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E()));
         if(TkMassCharge.size()==3){
           if(tktkRes_mass > 0) {
-            if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+            if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
             if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
             //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
             if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
           }
-          if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+          if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
           if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
           //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
           if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1317,26 +1318,26 @@ void Dfinder::TkCombinationPermutation(
           if(tk4_hindex==tk1_hindex) continue;
           if(tk4_hindex==tk2_hindex) continue;
           if(tk4_hindex==tk3_hindex) continue;
-          v4_tk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+          v4_tk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
           v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px() + v4_tk4.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py() + v4_tk4.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz() + v4_tk4.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E() + v4_tk4.E()));
           if(TkMassCharge[3].second==1){
-            v4_Restk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
-            v4_NonRestk4.SetXYZM(0,0,0,0);
+            v4_Restk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+            v4_NonRestk4.SetPxPyPzE(0,0,0,0);
           }
           else{ 
-            v4_Restk4.SetXYZM(0,0,0,0);
-            v4_NonRestk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+            v4_Restk4.SetPxPyPzE(0,0,0,0);
+            v4_NonRestk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
           }
           v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px() + v4_Restk4.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py() + v4_Restk4.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz() + v4_Restk4.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E() + v4_Restk4.E()));
           v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px() + v4_NonRestk4.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py() + v4_NonRestk4.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz() + v4_NonRestk4.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E() + v4_NonRestk4.E()));
           if(TkMassCharge.size()==4){
             if(tktkRes_mass > 0) {
-              if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+              if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
               if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
               //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
               if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
             }
-            if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+            if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
             if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
             //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
             if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1361,26 +1362,26 @@ void Dfinder::TkCombinationPermutation(
             if(tk5_hindex==tk2_hindex) continue;
             if(tk5_hindex==tk3_hindex) continue;
             if(tk5_hindex==tk4_hindex) continue;
-            v4_tk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+            v4_tk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
             v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px() + v4_tk4.Px() + v4_tk5.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py() + v4_tk4.Py() + v4_tk5.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz() + v4_tk4.Pz() + v4_tk5.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E() + v4_tk4.E() + v4_tk5.E()));
             if(TkMassCharge[4].second==1){
-              v4_Restk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
-              v4_NonRestk5.SetXYZM(0,0,0,0);
+              v4_Restk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+              v4_NonRestk5.SetPxPyPzE(0,0,0,0);
             }
             else{ 
-              v4_Restk5.SetXYZM(0,0,0,0);
-              v4_NonRestk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+              v4_Restk5.SetPxPyPzE(0,0,0,0);
+              v4_NonRestk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
             }
             v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px() + v4_Restk4.Px() + v4_Restk5.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py() + v4_Restk4.Py() + v4_Restk5.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz() + v4_Restk4.Pz() + v4_Restk5.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E() + v4_Restk4.E() + v4_Restk5.E()));
             v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px() + v4_NonRestk4.Px() + v4_NonRestk5.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py() + v4_NonRestk4.Py() + v4_NonRestk5.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz() + v4_NonRestk4.Pz() + v4_NonRestk5.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E() + v4_NonRestk4.E() + v4_NonRestk5.E()));
             if(TkMassCharge.size()==5){
               if(tktkRes_mass > 0) {
-                if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+                if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
                 if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
                 //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
                 if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
               }
-              if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+              if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
               if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
               //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
               if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1421,25 +1422,26 @@ void Dfinder::TkCombinationResFast(
   int tk5_hindex = -1;
 
   std::vector<int> selectedTkhidx;
-  TLorentzVector v4_D, v4_Res, v4_NonRes;//unfitted D, resonance, non-resonance track 4 vectors sum 
-  TLorentzVector v4_tk1, v4_tk2, v4_tk3, v4_tk4, v4_tk5;// all tracks
-  TLorentzVector v4_Restk1, v4_Restk2, v4_Restk3, v4_Restk4, v4_Restk5;// resonance tracks
-  TLorentzVector v4_NonRestk1, v4_NonRestk2, v4_NonRestk3, v4_NonRestk4, v4_NonRestk5;// non-resonance tracks, i.e., all - resonance tracks
+  ROOT::Math::PxPyPzEVector v4_D, v4_Res, v4_NonRes;//unfitted D, resonance, non-resonance track 4 vectors sum 
+  ROOT::Math::PxPyPzEVector v4_tk1, v4_tk2, v4_tk3, v4_tk4, v4_tk5;// all tracks
+  ROOT::Math::PxPyPzEVector v4_Restk1, v4_Restk2, v4_Restk3, v4_Restk4, v4_Restk5;// resonance tracks
+  ROOT::Math::PxPyPzEVector v4_NonRestk1, v4_NonRestk2, v4_NonRestk3, v4_NonRestk4, v4_NonRestk5;// non-resonance tracks, i.e., all - resonance tracks
 
   for(int tk1idx = 0; tk1idx < (int)isNeededTrackIdx.size(); tk1idx++){
-    v4_D.Clear(); v4_Res.Clear();
+    v4_D.SetPxPyPzE(0,0,0,0);
+    v4_Res.SetPxPyPzE(0,0,0,0);
     tk1_hindex = isNeededTrackIdx[tk1idx];
     // cout<<"\ntk1idx = "<<tk1idx<<" ,tk1_hindex"<<tk1_hindex<<endl;
     if(input_tracks[tk1_hindex]->charge()*TkMassCharge[0].first<0) continue;
-    v4_tk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+    v4_tk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
     v4_D.SetPxPyPzE((v4_tk1.Px()), (v4_tk1.Py()), (v4_tk1.Pz()), (v4_tk1.E()));
     if(TkMassCharge[0].second==1){
-      v4_Restk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
-      v4_NonRestk1.SetXYZM(0,0,0,0);
+      v4_Restk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+      v4_NonRestk1.SetPxPyPzE(0,0,0,0);
     }
     else{ 
-      v4_Restk1.SetXYZM(0,0,0,0);
-      v4_NonRestk1.SetXYZM(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
+      v4_Restk1.SetPxPyPzE(0,0,0,0);
+      v4_NonRestk1.SetPxPyPzE(input_tracks[tk1_hindex]->px(),input_tracks[tk1_hindex]->py(),input_tracks[tk1_hindex]->pz(),fabs(TkMassCharge[0].first));
     }
     v4_Res.SetPxPyPzE(v4_Restk1.Px(), v4_Restk1.Py(), v4_Restk1.Pz(), v4_Restk1.E());
     v4_NonRes.SetPxPyPzE(v4_NonRestk1.Px(), v4_NonRestk1.Py(), v4_NonRestk1.Pz(), v4_NonRestk1.E());
@@ -1448,29 +1450,29 @@ void Dfinder::TkCombinationResFast(
       // cout<<"tk2idx = "<<tk2idx<<" ,tk2_hindex"<<tk2_hindex<<endl;
       if(input_tracks[tk2_hindex]->charge()*TkMassCharge[1].first<0) continue;
       if(tk2_hindex==tk1_hindex) continue;
-      v4_tk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+      v4_tk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
       v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px()), (v4_tk1.Py() + v4_tk2.Py()), (v4_tk1.Pz() + v4_tk2.Pz()), (v4_tk1.E() + v4_tk2.E()));
       if(TkMassCharge[1].second==1){ 
-        v4_Restk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
-        v4_NonRestk2.SetXYZM(0,0,0,0);
+        v4_Restk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+        v4_NonRestk2.SetPxPyPzE(0,0,0,0);
       }
       else{
-        v4_Restk2.SetXYZM(0,0,0,0);
-        v4_NonRestk2.SetXYZM(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
+        v4_Restk2.SetPxPyPzE(0,0,0,0);
+        v4_NonRestk2.SetPxPyPzE(input_tracks[tk2_hindex]->px(),input_tracks[tk2_hindex]->py(),input_tracks[tk2_hindex]->pz(),fabs(TkMassCharge[1].first));
       }
       v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px()), (v4_Restk1.Py() + v4_Restk2.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz()), (v4_Restk1.E() + v4_Restk2.E()));
       v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E()));
       if(TkMassCharge.size()>2)
         if(TkMassCharge[1].second == 1 && TkMassCharge[2].second == 0 ){
           if(tktkRes_mass > 0) {
-            if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+            if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
             if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
             //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
           }
         }
       if(TkMassCharge.size()==2){
         //cut mass window before fit
-        if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+        if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
         if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
         //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
         if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1487,22 +1489,22 @@ void Dfinder::TkCombinationResFast(
         if(tk3_hindex==tk1_hindex) continue;
         if(tk3_hindex==tk2_hindex) continue;
 
-        v4_tk3.SetXYZM(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+        v4_tk3.SetPxPyPzE(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
         v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E()));
         if(TkMassCharge[2].second==1){ 
-          v4_Restk3.SetXYZM(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
-          v4_NonRestk3.SetXYZM(0,0,0,0);
+          v4_Restk3.SetPxPyPzE(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+          v4_NonRestk3.SetPxPyPzE(0,0,0,0);
         }
         else{ 
-          v4_Restk3.SetXYZM(0,0,0,0);
-          v4_NonRestk3.SetXYZM(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
+          v4_Restk3.SetPxPyPzE(0,0,0,0);
+          v4_NonRestk3.SetPxPyPzE(input_tracks[tk3_hindex]->px(),input_tracks[tk3_hindex]->py(),input_tracks[tk3_hindex]->pz(),fabs(TkMassCharge[2].first));
         }
         v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E()));
         v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E()));
         if(TkMassCharge.size()>3)
           if(TkMassCharge[2].second == 1 && TkMassCharge[3].second == 0 ){
             if(tktkRes_mass > 0) {
-              if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+              if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
               if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
               //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
             }
@@ -1510,7 +1512,7 @@ void Dfinder::TkCombinationResFast(
         if(TkMassCharge.size()==3){
           if(tktkRes_mass > 0)
             if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
-          if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+          if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
           if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
           //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
           if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1529,22 +1531,22 @@ void Dfinder::TkCombinationResFast(
           if(tk4_hindex==tk1_hindex) continue;
           if(tk4_hindex==tk2_hindex) continue;
           if(tk4_hindex==tk3_hindex) continue;
-          v4_tk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+          v4_tk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
           v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px() + v4_tk4.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py() + v4_tk4.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz() + v4_tk4.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E() + v4_tk4.E()));
           if(TkMassCharge[3].second==1){ 
-            v4_Restk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
-            v4_NonRestk4.SetXYZM(0,0,0,0);
+            v4_Restk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+            v4_NonRestk4.SetPxPyPzE(0,0,0,0);
           }
           else{ 
-            v4_Restk4.SetXYZM(0,0,0,0);
-            v4_NonRestk4.SetXYZM(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
+            v4_Restk4.SetPxPyPzE(0,0,0,0);
+            v4_NonRestk4.SetPxPyPzE(input_tracks[tk4_hindex]->px(),input_tracks[tk4_hindex]->py(),input_tracks[tk4_hindex]->pz(),fabs(TkMassCharge[3].first));
           }
           v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px() + v4_Restk4.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py() + v4_Restk4.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz() + v4_Restk4.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E() + v4_Restk4.E()));
           v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px() + v4_NonRestk4.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py() + v4_NonRestk4.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz() + v4_NonRestk4.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E() + v4_NonRestk4.E()));
           if(TkMassCharge.size()>4)
             if(TkMassCharge[3].second == 1 && TkMassCharge[4].second == 0 ){
               if(tktkRes_mass > 0) {
-                if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+                if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
                 if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
                 //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
               }
@@ -1552,7 +1554,7 @@ void Dfinder::TkCombinationResFast(
           if(TkMassCharge.size()==4){
             if(tktkRes_mass > 0)
               if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
-            if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+            if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
             if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
             //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
             if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1571,26 +1573,26 @@ void Dfinder::TkCombinationResFast(
             if(tk5_hindex==tk2_hindex) continue;
             if(tk5_hindex==tk3_hindex) continue;
             if(tk5_hindex==tk4_hindex) continue;
-            v4_tk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+            v4_tk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
             v4_D.SetPxPyPzE((v4_tk1.Px() + v4_tk2.Px() + v4_tk3.Px() + v4_tk4.Px() + v4_tk5.Px()), (v4_tk1.Py() + v4_tk2.Py() + v4_tk3.Py() + v4_tk4.Py() + v4_tk5.Py()), (v4_tk1.Pz() + v4_tk2.Pz() + v4_tk3.Pz() + v4_tk4.Pz() + v4_tk5.Pz()), (v4_tk1.E() + v4_tk2.E() + v4_tk3.E() + v4_tk4.E() + v4_tk5.E()));
             if(TkMassCharge[4].second==1){ 
-              v4_Restk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
-              v4_NonRestk5.SetXYZM(0,0,0,0);
+              v4_Restk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+              v4_NonRestk5.SetPxPyPzE(0,0,0,0);
             }
             else{ 
-              v4_Restk5.SetXYZM(0,0,0,0);
-              v4_NonRestk5.SetXYZM(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
+              v4_Restk5.SetPxPyPzE(0,0,0,0);
+              v4_NonRestk5.SetPxPyPzE(input_tracks[tk5_hindex]->px(),input_tracks[tk5_hindex]->py(),input_tracks[tk5_hindex]->pz(),fabs(TkMassCharge[4].first));
             }
             v4_Res.SetPxPyPzE((v4_Restk1.Px() + v4_Restk2.Px() + v4_Restk3.Px() + v4_Restk4.Px() + v4_Restk5.Px()), (v4_Restk1.Py() + v4_Restk2.Py() + v4_Restk3.Py() + v4_Restk4.Py() + v4_Restk5.Py()), (v4_Restk1.Pz() + v4_Restk2.Pz() + v4_Restk3.Pz() + v4_Restk4.Pz() + v4_Restk5.Pz()), (v4_Restk1.E() + v4_Restk2.E() + v4_Restk3.E() + v4_Restk4.E() + v4_Restk5.E()));
             v4_NonRes.SetPxPyPzE((v4_NonRestk1.Px() + v4_NonRestk2.Px() + v4_NonRestk3.Px() + v4_NonRestk4.Px() + v4_NonRestk5.Px()), (v4_NonRestk1.Py() + v4_NonRestk2.Py() + v4_NonRestk3.Py() + v4_NonRestk4.Py() + v4_NonRestk5.Py()), (v4_NonRestk1.Pz() + v4_NonRestk2.Pz() + v4_NonRestk3.Pz() + v4_NonRestk4.Pz() + v4_NonRestk5.Pz()), (v4_NonRestk1.E() + v4_NonRestk2.E() + v4_NonRestk3.E() + v4_NonRestk4.E() + v4_NonRestk5.E()));
             if(TkMassCharge.size()==5){
               if(tktkRes_mass > 0) {
-                if (fabs(v4_Res.Mag()-tktkRes_mass) > tktkRes_mass_window) continue;
+                if (fabs(v4_Res.M()-tktkRes_mass) > tktkRes_mass_window) continue;
                 if (v4_Res.Pt() < tktkRes_dPtCut_[Dchannel_number-1]) continue;
                 //if (fabs(v4_Res.Eta()) > tktkRes_dEtaCut_[Dchannel_number-1]) continue;
                 if((v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) < ResToNonRes_PtAsym_min_[Dchannel_number-1] || (v4_Res.Pt()-v4_NonRes.Pt())/(v4_Res.Pt()+v4_NonRes.Pt()) > ResToNonRes_PtAsym_max_[Dchannel_number-1]) continue;
               }
-              if(v4_D.Mag()<mass_window[0] || v4_D.Mag()>mass_window[1]) continue;
+              if(v4_D.M()<mass_window[0] || v4_D.M()>mass_window[1]) continue;
               if(v4_D.Pt() < dPtCut_[Dchannel_number-1])continue;
               //if(fabs(v4_D.Eta()) > dEtaCut_[Dchannel_number-1])continue;
               if(fabs(v4_D.Rapidity()) > dRapidityCut_[Dchannel_number-1])continue;
@@ -1663,36 +1665,36 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
   AnalyticalImpactPointExtrapolator extrapolator(field);
   TrajectoryStateOnSurface tsos;
   
-  TLorentzVector v4_tk;
-  // std::vector<TLorentzVector> tktk_4vecs;//fitted tks
-  TLorentzVector tktk_4vec;//fitted D
-  TLorentzVector unfitted_tktk_4vec;//unfitted D
-  // std::vector<TLorentzVector> tktkRes_4vecs;//fitted Res tks
-  TLorentzVector tktkRes_4vec;//fitted Res
-  TLorentzVector unfitted_tktkRes_4vec;//unfitted Res
+  ROOT::Math::PxPyPzEVector v4_tk;
+  // std::vector<ROOT::Math::PxPyPzEVector> tktk_4vecs;//fitted tks
+  ROOT::Math::PxPyPzEVector tktk_4vec;//fitted D
+  ROOT::Math::PxPyPzEVector unfitted_tktk_4vec;//unfitted D
+  // std::vector<ROOT::Math::PxPyPzEVector> tktkRes_4vecs;//fitted Res tks
+  ROOT::Math::PxPyPzEVector tktkRes_4vec;//fitted Res
+  ROOT::Math::PxPyPzEVector unfitted_tktkRes_4vec;//unfitted Res
   std::vector<RefCountedKinematicParticle> tktk_candidate;//input tracks to D fitter
   std::vector<RefCountedKinematicParticle> tktkRes_candidate;//input tracks to Res fitter
   std::vector<RefCountedKinematicParticle> tktkCands;//output tracks from D fitter
   std::vector<RefCountedKinematicParticle> tktkResCands;//output tracks from Res fitter
-  TLorentzVector temp_vec;//for temporary usage
+  ROOT::Math::PxPyPzEVector temp_vec;//for temporary usage
 
   for(int i = 0; i < int(selectedTkhidxSet.size()); i++){
     if (DInfo.size >= MAX_XB) break;
     
     //clear before using
-    v4_tk.Clear();
-    // tktk_4vecs.clear();
-    tktk_4vec.Clear();
-    unfitted_tktk_4vec.Clear();
-    // tktkRes_4vecs.clear();
-    tktkRes_4vec.Clear();
-    unfitted_tktkRes_4vec.Clear();
+    v4_tk.SetPxPyPzE(0,0,0,0);
+    // tktk_4vecs.SetPxPyPzE(0,0,0,0);
+    tktk_4vec.SetPxPyPzE(0,0,0,0);
+    unfitted_tktk_4vec.SetPxPyPzE(0,0,0,0);
+    // tktkRes_4vecs.SetPxPyPzE(0,0,0,0);
+    tktkRes_4vec.SetPxPyPzE(0,0,0,0);
+    unfitted_tktkRes_4vec.SetPxPyPzE(0,0,0,0);
     tktk_candidate.clear();
     tktkRes_candidate.clear();
     tktkCands.clear();
     tktkResCands.clear();
-    unfitted_tktk_4vec.SetPxPyPzE(0., 0., 0., 0.);
-    unfitted_tktkRes_4vec.SetPxPyPzE(0., 0., 0., 0.);
+    unfitted_tktk_4vec.SetPxPyPzE(0,0,0,0);
+    unfitted_tktkRes_4vec.SetPxPyPzE(0,0,0,0);
 
     //push back the Res tracks as first tracks
     ParticleMass tk_mass;
@@ -1703,7 +1705,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
     std::vector<float> pushbackResTrkMassHypo;
     float tk_sigma;
     for(int p = 0; p < int(selectedTkhidxSet[0].size()); p++){       // all Set has same size, could also use [i] as the index for selectedTkhidxSet[i] 
-      temp_vec.SetXYZM(input_tracks[selectedTkhidxSet[i][p]]->px(), input_tracks[selectedTkhidxSet[i][p]]->py(), input_tracks[selectedTkhidxSet[i][p]]->pz(), fabs(TkMassCharge[p].first));
+      temp_vec.SetPxPyPzE(input_tracks[selectedTkhidxSet[i][p]]->px(), input_tracks[selectedTkhidxSet[i][p]]->py(), input_tracks[selectedTkhidxSet[i][p]]->pz(), fabs(TkMassCharge[p].first));
       unfitted_tktk_4vec += temp_vec;
       if(TkMassCharge[p].second==0) continue; // push resonace duaghter particle first here, other particle later
       reco::TransientTrack tkTT(*(input_tracks[selectedTkhidxSet[i][p]])/*.pseudoTrack()*/, &(*bField) );
@@ -1818,9 +1820,9 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
                               tktkRes_VFP->currentState().kinematicParameters().momentum().z(),
                               tktkRes_VFP->currentState().kinematicParameters().energy());
 
-      DInfo.tktkRes_unfitted_mass[DInfo.size]   = unfitted_tktkRes_4vec.Mag();
+      DInfo.tktkRes_unfitted_mass[DInfo.size]   = unfitted_tktkRes_4vec.M();
       DInfo.tktkRes_unfitted_pt[DInfo.size]     = unfitted_tktkRes_4vec.Pt();
-      DInfo.tktkRes_mass[DInfo.size]            = tktkRes_4vec.Mag();
+      DInfo.tktkRes_mass[DInfo.size]            = tktkRes_4vec.M();
       DInfo.tktkRes_pt[DInfo.size]              = tktkRes_4vec.Pt();
       DInfo.tktkRes_eta[DInfo.size]             = tktkRes_4vec.Eta();
       DInfo.tktkRes_phi[DInfo.size]             = tktkRes_4vec.Phi();
@@ -1836,17 +1838,17 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
       DInfo.tktkRes_vtxdof[DInfo.size]          = tktkRes_VFPvtx->degreesOfFreedom();
       DInfo.tktkRes_vtxchi2[DInfo.size]         = tktkRes_VFPvtx->chiSquared();
 
-      TVector3 Res_svpvVec;
+      ROOT::Math::XYZVector Res_svpvVec;
       Res_svpvVec.SetXYZ(DInfo.tktkRes_vtxX[DInfo.size]-EvtInfo.PVx, DInfo.tktkRes_vtxY[DInfo.size]-EvtInfo.PVy, DInfo.tktkRes_vtxZ[DInfo.size]-EvtInfo.PVz);
-      TVector3 Res_dVec;
+      ROOT::Math::XYZVector Res_dVec;
       //Res_dVec.SetPtEtaPhi(DInfo.tktkRes_pt[DInfo.size], DInfo.tktkRes_eta[DInfo.size], DInfo.tktkRes_phi[DInfo.size]);
       Res_dVec.SetXYZ(tktkRes_4vec.Px(), tktkRes_4vec.Py(), tktkRes_4vec.Pz());
-      DInfo.tktkRes_alpha[DInfo.size] = Res_svpvVec.Angle(Res_dVec);
+      DInfo.tktkRes_alpha[DInfo.size] = ROOT::Math::VectorUtil::Angle(Res_svpvVec, Res_dVec);
       if( DInfo.tktkRes_alpha[DInfo.size] > tktkRes_alphaCut_[Dchannel_number-1]) continue;
 
-      TVector3 Res_svTosvVec;
+      ROOT::Math::XYZVector Res_svTosvVec;
       Res_svTosvVec.SetXYZ(DInfo.tktkRes_vtxX[DInfo.size]-tktk_VFPvtx->position().x(), DInfo.tktkRes_vtxY[DInfo.size]-tktk_VFPvtx->position().y(), DInfo.tktkRes_vtxZ[DInfo.size]-tktk_VFPvtx->position().z());
-      DInfo.tktkRes_alphaToSV[DInfo.size] = Res_svTosvVec.Angle(Res_dVec);
+      DInfo.tktkRes_alphaToSV[DInfo.size] = ROOT::Math::VectorUtil::Angle(Res_svTosvVec, Res_dVec);
       if( DInfo.tktkRes_alphaToSV[DInfo.size] > tktkRes_alphaToSVCut_[Dchannel_number-1]) continue;
 
       VertexDistance3D Res_a3d;
@@ -1870,20 +1872,20 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
       DInfo.tktkRes_rftk3_MassHypo[DInfo.size]     = -2;
       DInfo.tktkRes_rftk4_MassHypo[DInfo.size]     = -2;
 
-      // DInfo.tktkRes_rftk1_mass[DInfo.size]      = tktkRes_4vecs[0].Mag();
+      // DInfo.tktkRes_rftk1_mass[DInfo.size]      = tktkRes_4vecs[0].M();
       // DInfo.tktkRes_rftk1_pt[DInfo.size]        = tktkRes_4vecs[0].Pt();
       // DInfo.tktkRes_rftk1_eta[DInfo.size]       = tktkRes_4vecs[0].Eta();
       // DInfo.tktkRes_rftk1_phi[DInfo.size]       = tktkRes_4vecs[0].Phi();
       DInfo.tktkRes_rftk1_index[DInfo.size]     = pushbackResTrkIdx[0];
       DInfo.tktkRes_rftk1_MassHypo[DInfo.size]     = pushbackResTrkMassHypo[0];
-      // DInfo.tktkRes_rftk2_mass[DInfo.size]      = tktkRes_4vecs[1].Mag();
+      // DInfo.tktkRes_rftk2_mass[DInfo.size]      = tktkRes_4vecs[1].M();
       // DInfo.tktkRes_rftk2_pt[DInfo.size]        = tktkRes_4vecs[1].Pt();
       // DInfo.tktkRes_rftk2_eta[DInfo.size]       = tktkRes_4vecs[1].Eta();
       // DInfo.tktkRes_rftk2_phi[DInfo.size]       = tktkRes_4vecs[1].Phi();
       DInfo.tktkRes_rftk2_index[DInfo.size]     = pushbackResTrkIdx[1];
       DInfo.tktkRes_rftk2_MassHypo[DInfo.size]     = pushbackResTrkMassHypo[1];
       if(tktkResCands.size()>2){
-        // DInfo.tktkRes_rftk3_mass[DInfo.size]      = tktkRes_4vecs[2].Mag();
+        // DInfo.tktkRes_rftk3_mass[DInfo.size]      = tktkRes_4vecs[2].M();
         // DInfo.tktkRes_rftk3_pt[DInfo.size]        = tktkRes_4vecs[2].Pt();
         // DInfo.tktkRes_rftk3_eta[DInfo.size]       = tktkRes_4vecs[2].Eta();
         // DInfo.tktkRes_rftk3_phi[DInfo.size]       = tktkRes_4vecs[2].Phi();
@@ -1891,7 +1893,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
         DInfo.tktkRes_rftk3_MassHypo[DInfo.size]     = pushbackResTrkMassHypo[2];
       }
       if(tktkResCands.size()>3){
-        // DInfo.tktkRes_rftk4_mass[DInfo.size]      = tktkRes_4vecs[3].Mag();
+        // DInfo.tktkRes_rftk4_mass[DInfo.size]      = tktkRes_4vecs[3].M();
         // DInfo.tktkRes_rftk4_pt[DInfo.size]        = tktkRes_4vecs[3].Pt();
         // DInfo.tktkRes_rftk4_eta[DInfo.size]       = tktkRes_4vecs[3].Eta();
         // DInfo.tktkRes_rftk4_phi[DInfo.size]       = tktkRes_4vecs[3].Phi();
@@ -1902,9 +1904,9 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
 
     //fit info
     DInfo.index[DInfo.size]           = DInfo.size;
-    DInfo.unfitted_mass[DInfo.size]   = unfitted_tktk_4vec.Mag();
+    DInfo.unfitted_mass[DInfo.size]   = unfitted_tktk_4vec.M();
     DInfo.unfitted_pt[DInfo.size]     = unfitted_tktk_4vec.Pt();
-    DInfo.mass[DInfo.size]            = tktk_4vec.Mag();
+    DInfo.mass[DInfo.size]            = tktk_4vec.M();
     DInfo.pt[DInfo.size]              = tktk_4vec.Pt();
     DInfo.eta[DInfo.size]             = tktk_4vec.Eta();
     DInfo.phi[DInfo.size]             = tktk_4vec.Phi();
@@ -1957,18 +1959,18 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
     DInfo.vtxdof[DInfo.size]          = tktk_VFPvtx->degreesOfFreedom();
     DInfo.vtxchi2[DInfo.size]         = tktk_VFPvtx->chiSquared();
 
-    TVector3 svpvVec;
+    ROOT::Math::XYZVector svpvVec;
     svpvVec.SetXYZ(DInfo.vtxX[DInfo.size]-EvtInfo.PVx, DInfo.vtxY[DInfo.size]-EvtInfo.PVy, DInfo.vtxZ[DInfo.size]-EvtInfo.PVz);
-    TVector3 dVec;
+    ROOT::Math::XYZVector dVec;
     dVec.SetXYZ(DInfo.px[DInfo.size], DInfo.py[DInfo.size], DInfo.pz[DInfo.size]);
-    DInfo.alpha[DInfo.size] = svpvVec.Angle(dVec);
+    DInfo.alpha[DInfo.size] = ROOT::Math::VectorUtil::Angle(svpvVec, dVec);
     if( DInfo.alpha[DInfo.size] > alphaCut_[Dchannel_number-1]) continue;
 
-    // DInfo.rftk1_mass[DInfo.size]      = tktk_4vecs[0].Mag();
+    // DInfo.rftk1_mass[DInfo.size]      = tktk_4vecs[0].M();
     // DInfo.rftk1_pt[DInfo.size]        = tktk_4vecs[0].Pt();
     // DInfo.rftk1_eta[DInfo.size]       = tktk_4vecs[0].Eta();
     // DInfo.rftk1_phi[DInfo.size]       = tktk_4vecs[0].Phi();
-    // DInfo.rftk2_mass[DInfo.size]      = tktk_4vecs[1].Mag();
+    // DInfo.rftk2_mass[DInfo.size]      = tktk_4vecs[1].M();
     // DInfo.rftk2_pt[DInfo.size]        = tktk_4vecs[1].Pt();
     // DInfo.rftk2_eta[DInfo.size]       = tktk_4vecs[1].Eta();
     // DInfo.rftk2_phi[DInfo.size]       = tktk_4vecs[1].Phi();
@@ -1995,7 +1997,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
     if( DInfo.rftk1_index[DInfo.size] == -1) DInfo.rftk1_MassHypo[DInfo.size] = D0_MASS;
 
     if(tktkCands.size()>2){
-      // DInfo.rftk3_mass[DInfo.size]  = tktk_4vecs[2].Mag();
+      // DInfo.rftk3_mass[DInfo.size]  = tktk_4vecs[2].M();
       // DInfo.rftk3_pt[DInfo.size]    = tktk_4vecs[2].Pt();
       // DInfo.rftk3_eta[DInfo.size]   = tktk_4vecs[2].Eta();
       // DInfo.rftk3_phi[DInfo.size]   = tktk_4vecs[2].Phi();
@@ -2003,7 +2005,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
       DInfo.rftk3_MassHypo[DInfo.size] = pushbackTrkMassHypo[2];
     }
     if(tktkCands.size()>3){
-      // DInfo.rftk4_mass[DInfo.size]  = tktk_4vecs[3].Mag();
+      // DInfo.rftk4_mass[DInfo.size]  = tktk_4vecs[3].M();
       // DInfo.rftk4_pt[DInfo.size]    = tktk_4vecs[3].Pt();
       // DInfo.rftk4_eta[DInfo.size]   = tktk_4vecs[3].Eta();
       // DInfo.rftk4_phi[DInfo.size]   = tktk_4vecs[3].Phi();
@@ -2011,7 +2013,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
       DInfo.rftk4_MassHypo[DInfo.size] = pushbackTrkMassHypo[3];
     }
     if(tktkCands.size()>4){
-      // DInfo.rftk5_mass[DInfo.size]  = tktk_4vecs[4].Mag();
+      // DInfo.rftk5_mass[DInfo.size]  = tktk_4vecs[4].M();
       // DInfo.rftk5_pt[DInfo.size]    = tktk_4vecs[4].Pt();
       // DInfo.rftk5_eta[DInfo.size]   = tktk_4vecs[4].Eta();
       // DInfo.rftk5_phi[DInfo.size]   = tktk_4vecs[4].Phi();
