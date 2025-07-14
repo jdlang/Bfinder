@@ -1617,20 +1617,21 @@ void Dfinder::TkCombinationResFast(
 
 //BranchOutNTk{{{
 void Dfinder::BranchOutNTk(//input 2~4 tracks
-                           DInfoBranches &DInfo, 
-                           std::vector<const reco::Track*> input_tracks, 
-                           reco::Vertex thePrimaryV,
-                           std::vector<int> isNeededTrackIdx,
-                           std::vector<int> &D_counter,
-                           float *mass_window,
-                           std::vector< std::pair<float, int> > TkMassCharge,
-                           double tktkRes_mass,
-                           double tktkRes_mass_window,
-                           bool doConstrainFit,
-                           bool SequentialFit,
-                           int Dchannel_number,
-                           int TkCombinationMethod
-                           ){
+    DInfoBranches &DInfo,
+    std::vector<const reco::Track*> input_tracks,
+    reco::Vertex thePrimaryV,
+    std::vector<int> isNeededTrackIdx,
+    std::vector<int> &D_counter,
+    float *mass_window,
+    std::vector< std::pair<float, int> > TkMassCharge,
+    double tktkRes_mass,
+    double tktkRes_mass_window,
+    bool doConstrainFit,
+    bool SequentialFit,
+    int Dchannel_number,
+    int TkCombinationMethod
+  )
+  {
   if(Dchannel_number > (int)Dchannel_.size()){ printf("Exceeding defined # of channel, exit"); return;}
 
   std::vector< std::vector<int> > selectedTkhidxSet;
