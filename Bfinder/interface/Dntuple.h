@@ -937,7 +937,11 @@ public:
               }
           }
       }
-
+    delete bP;
+    delete bVtx;
+    delete b4P;
+    delete boost;
+    delete D3Vec;
   }//}}}
   
   void fillDGenTree(TTree* ntGen, GenInfoBranches *GenInfo, bool gskim=true)
@@ -1074,18 +1078,21 @@ public:
             GdecayvtxX[gsize] = GenInfo->vtxX[GenInfo->da1[j]];//all daughers should be from the same vertex, can be double checked here
             GdecayvtxY[gsize] = GenInfo->vtxY[GenInfo->da1[j]];
             GdecayvtxZ[gsize] = GenInfo->vtxZ[GenInfo->da1[j]];
+            
             Gtk1pt[gsize] = GenInfo->pt[GenInfo->da1[j]];
             Gtk1eta[gsize] = GenInfo->eta[GenInfo->da1[j]];
             Gtk1phi[gsize] = GenInfo->phi[GenInfo->da1[j]];
             Gtk1pdgId[gsize] = GenInfo->pdgId[GenInfo->da1[j]];
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da1[j]],GenInfo->eta[GenInfo->da1[j]],GenInfo->phi[GenInfo->da1[j]],GenInfo->mass[GenInfo->da1[j]]);
             Gtk1y[gsize] = bGen->Rapidity();
+            
             Gtk2pt[gsize] = GenInfo->pt[GenInfo->da2[j]];
             Gtk2eta[gsize] = GenInfo->eta[GenInfo->da2[j]];
             Gtk2phi[gsize] = GenInfo->phi[GenInfo->da2[j]];
             Gtk2pdgId[gsize] = GenInfo->pdgId[GenInfo->da2[j]];
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[j]],GenInfo->eta[GenInfo->da2[j]],GenInfo->phi[GenInfo->da2[j]],GenInfo->mass[GenInfo->da2[j]]);
             Gtk2y[gsize] = bGen->Rapidity();
+            
             if(GisSignal[gsize]==3||GisSignal[gsize]==4||GisSignal[gsize]==5||GisSignal[gsize]==6)
               {
                 Gtk3pt[gsize] = GenInfo->pt[GenInfo->da3[j]];
@@ -1094,6 +1101,7 @@ public:
                 Gtk3pdgId[gsize] = GenInfo->pdgId[GenInfo->da3[j]];
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da3[j]],GenInfo->eta[GenInfo->da3[j]],GenInfo->phi[GenInfo->da3[j]],GenInfo->mass[GenInfo->da3[j]]);
                 Gtk3y[gsize] = bGen->Rapidity();
+                
                 if(GisSignal[gsize]==5||GisSignal[gsize]==6)
                   {
                     Gtk4pt[gsize] = GenInfo->pt[GenInfo->da4[j]];
@@ -1109,30 +1117,36 @@ public:
             GdecayvtxX[gsize] = GenInfo->vtxX[GenInfo->da1[j]];
             GdecayvtxY[gsize] = GenInfo->vtxY[GenInfo->da1[j]];
             GdecayvtxZ[gsize] = GenInfo->vtxZ[GenInfo->da1[j]];
+            
             Gtk1pt[gsize] = GenInfo->pt[GenInfo->da1[j]]; // tk1 is resonace particle, by current MC gen table order
             Gtk1mass[gsize] = GenInfo->mass[GenInfo->da1[j]]; 
             Gtk1eta[gsize] = GenInfo->eta[GenInfo->da1[j]];
             Gtk1phi[gsize] = GenInfo->phi[GenInfo->da1[j]];
-            Gtk1pdgId[gsize] = GenInfo->pdgId[GenInfo->da1[j]]; 
+            Gtk1pdgId[gsize] = GenInfo->pdgId[GenInfo->da1[j]];
+            
             Gtk2pt[gsize] = GenInfo->pt[GenInfo->da2[j]]; // tk2 is remaining particle , ex Dsphikk pi, this is pi
             Gtk2mass[gsize] = GenInfo->mass[GenInfo->da2[j]]; 
             Gtk2eta[gsize] = GenInfo->eta[GenInfo->da2[j]];
             Gtk2phi[gsize] = GenInfo->phi[GenInfo->da2[j]];
             Gtk2pdgId[gsize] = GenInfo->pdgId[GenInfo->da2[j]];
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[j]],GenInfo->eta[GenInfo->da2[j]],GenInfo->phi[GenInfo->da2[j]],GenInfo->mass[GenInfo->da2[j]]);
+// FIXME: Should this be Gtk2y ?? <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             Gtk1y[gsize] = bGen->Rapidity();
+            
             GRestk1pt[gsize] = GenInfo->pt[GenInfo->da1[GenInfo->da1[j]]];
             GRestk1eta[gsize] = GenInfo->eta[GenInfo->da1[GenInfo->da1[j]]];
             GRestk1phi[gsize] = GenInfo->phi[GenInfo->da1[GenInfo->da1[j]]];
             GRestk1pdgId[gsize] = GenInfo->pdgId[GenInfo->da1[GenInfo->da1[j]]]; 
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da1[GenInfo->da1[j]]],GenInfo->eta[GenInfo->da1[GenInfo->da1[j]]],GenInfo->phi[GenInfo->da1[GenInfo->da1[j]]],GenInfo->mass[GenInfo->da1[GenInfo->da1[j]]]);
             GRestk1y[gsize] = bGen->Rapidity();
+            
             GRestk2pt[gsize] = GenInfo->pt[GenInfo->da2[GenInfo->da1[j]]];
             GRestk2eta[gsize] = GenInfo->eta[GenInfo->da2[GenInfo->da1[j]]];
             GRestk2phi[gsize] = GenInfo->phi[GenInfo->da2[GenInfo->da1[j]]];
             GRestk2pdgId[gsize] = GenInfo->phi[GenInfo->pdgId[GenInfo->da1[j]]];
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[GenInfo->da1[j]]],GenInfo->eta[GenInfo->da2[GenInfo->da1[j]]],GenInfo->phi[GenInfo->da2[GenInfo->da1[j]]],GenInfo->mass[GenInfo->da2[GenInfo->da1[j]]]);
             GRestk2y[gsize] = bGen->Rapidity();
+            
             if(GisSignal[gsize]==11||GisSignal[gsize]==12)
               {
                 GRestk3pt[gsize] = GenInfo->pt[GenInfo->da3[GenInfo->da1[j]]];
@@ -1140,6 +1154,7 @@ public:
                 GRestk3phi[gsize] = GenInfo->phi[GenInfo->da3[GenInfo->da1[j]]];
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da3[GenInfo->da1[j]]],GenInfo->eta[GenInfo->da3[GenInfo->da1[j]]],GenInfo->phi[GenInfo->da3[GenInfo->da1[j]]],GenInfo->mass[GenInfo->da3[GenInfo->da1[j]]]);
                 GRestk3y[gsize] = bGen->Rapidity();
+                
                 GRestk4pt[gsize] = GenInfo->pt[GenInfo->da4[GenInfo->da1[j]]];
                 GRestk4eta[gsize] = GenInfo->eta[GenInfo->da4[GenInfo->da1[j]]];
                 GRestk4phi[gsize] = GenInfo->phi[GenInfo->da4[GenInfo->da1[j]]];
@@ -1157,21 +1172,22 @@ public:
                 GdecayvtxX[gsize] = GenInfo->vtxX[GenInfo->da1[j]];
                 GdecayvtxY[gsize] = GenInfo->vtxY[GenInfo->da1[j]];
                 GdecayvtxZ[gsize] = GenInfo->vtxZ[GenInfo->da1[j]];
+                
                 Gtk1pt[gsize] = GenInfo->pt[GenInfo->da1[j]];
                 Gtk1eta[gsize] = GenInfo->eta[GenInfo->da1[j]];
                 Gtk1phi[gsize] = GenInfo->phi[GenInfo->da1[j]];
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da1[j]],GenInfo->eta[GenInfo->da1[j]],GenInfo->phi[GenInfo->da1[j]],GenInfo->mass[GenInfo->da1[j]]);
                 Gtk1y[gsize] = bGen->Rapidity();
+                
                 Gtk2pt[gsize] = GenInfo->pt[GenInfo->da2[j]];
                 Gtk2eta[gsize] = GenInfo->eta[GenInfo->da2[j]];
                 Gtk2phi[gsize] = GenInfo->phi[GenInfo->da2[j]];
-
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[j]],GenInfo->eta[GenInfo->da2[j]],GenInfo->phi[GenInfo->da2[j]],GenInfo->mass[GenInfo->da2[j]]);
                 Gtk2y[gsize] = bGen->Rapidity();
+                
                 Gtk3pt[gsize] = GenInfo->pt[GenInfo->da3[j]];
                 Gtk3eta[gsize] = GenInfo->eta[GenInfo->da3[j]];
                 Gtk3phi[gsize] = GenInfo->phi[GenInfo->da3[j]];
-
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da3[j]],GenInfo->eta[GenInfo->da3[j]],GenInfo->phi[GenInfo->da3[j]],GenInfo->mass[GenInfo->da3[j]]);
                 Gtk3y[gsize] = bGen->Rapidity();
               }
@@ -1183,26 +1199,26 @@ public:
                 Gtk1pt[gsize] = GenInfo->pt[GenInfo->da2[j]];
                 Gtk1eta[gsize] = GenInfo->eta[GenInfo->da2[j]];
                 Gtk1phi[gsize] = GenInfo->phi[GenInfo->da2[j]];
-
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[j]],GenInfo->eta[GenInfo->da2[j]],GenInfo->phi[GenInfo->da2[j]],GenInfo->mass[GenInfo->da2[j]]);
                 Gtk1y[gsize] = bGen->Rapidity();
+                
                 GRestk1pt[gsize] = GenInfo->pt[GenInfo->da1[GenInfo->da1[j]]];
                 GRestk1eta[gsize] = GenInfo->eta[GenInfo->da1[GenInfo->da1[j]]];
                 GRestk1phi[gsize] = GenInfo->phi[GenInfo->da1[GenInfo->da1[j]]];
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da1[GenInfo->da1[j]]],GenInfo->eta[GenInfo->da1[GenInfo->da1[j]]],GenInfo->phi[GenInfo->da1[GenInfo->da1[j]]],GenInfo->mass[GenInfo->da1[GenInfo->da1[j]]]);
                 GRestk1y[gsize] = bGen->Rapidity();
+                
                 GRestk2pt[gsize] = GenInfo->pt[GenInfo->da2[GenInfo->da1[j]]];
                 GRestk2eta[gsize] = GenInfo->eta[GenInfo->da2[GenInfo->da1[j]]];
                 GRestk2phi[gsize] = GenInfo->phi[GenInfo->da2[GenInfo->da1[j]]];
                 bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[GenInfo->da1[j]]],GenInfo->eta[GenInfo->da2[GenInfo->da1[j]]],GenInfo->phi[GenInfo->da2[GenInfo->da1[j]]],GenInfo->mass[GenInfo->da2[GenInfo->da1[j]]]);
                 GRestk2y[gsize] = bGen->Rapidity();
-				
               }
           }
-
         gsize++;
       }
     ntGen->Fill();
+    delete bGen;
   }
 
   double findMass(int particlePdgId)
@@ -1212,9 +1228,17 @@ public:
     if(TMath::Abs(particlePdgId)==2212) return PROTON_MASS;
     else
       {
-        cout<<"ERROR: find particle mass falied >> Particle pdgId: "<<particlePdgId<<endl;
+        cout<<"ERROR: find particle mass failed >> Particle pdgId: "<<particlePdgId<<endl;
         return 0;
       }
+  }
+  
+  double calcThetaStar(TLorentzVector tkVec, TVector3 boost, TVector3 angle)
+  {
+    TLorentzVector tkVecBoost(tkVec);
+    tkVecBoost.Boost(boost);
+    double thetastar = tkVecBoost.Angle(angle);
+    return thetastar;
   }
 
   int findPdgid(Double_t tkmass)
@@ -1224,7 +1248,7 @@ public:
     else if(TMath::Abs(tkmass-PROTON_MASS)<0.1) return PROTON_PDGID;
     else
       {
-        cout<<"ERROR: find particle pdgid falied >> Particle mass: "<<tkmass<<endl;
+        cout<<"ERROR: find particle pdgid failed >> Particle mass: "<<tkmass<<endl;
         return 0;
       }
   }
@@ -1463,9 +1487,7 @@ public:
         tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
         Dtrk1Y[typesize] = tk1Vec->Rapidity();
         Dtrk1P[typesize] = tk1Vec->P();
-        tk1Vec->Boost(-*boost);
-        Dtrk1thetastar[typesize] = tk1Vec->Angle(*D3Vec);
-        tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
+        Dtrk1thetastar[typesize] = calcThetaStar(*tk1Vec, -*boost, *D3Vec);
         Dtrk1Dz[typesize] = TrackInfo->dz[DInfo->rftk1_index[j]];
         Dtrk1DzError[typesize] = TrackInfo->dzerror[DInfo->rftk1_index[j]];
         Dtrk1Dxy[typesize] = TrackInfo->dxy[DInfo->rftk1_index[j]];
@@ -1497,9 +1519,7 @@ public:
         tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
         Dtrk2Y[typesize] = tk2Vec->Rapidity();
         Dtrk2P[typesize] = tk2Vec->P();
-        tk2Vec->Boost(-*boost);
-        Dtrk2thetastar[typesize] = tk2Vec->Angle(*D3Vec);
-        tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
+        Dtrk2thetastar[typesize] = calcThetaStar(*tk2Vec, -*boost, *D3Vec);
         Dtrk2Dz[typesize] = TrackInfo->dz[DInfo->rftk2_index[j]];
         Dtrk2DzError[typesize] = TrackInfo->dzerror[DInfo->rftk2_index[j]];
         Dtrk2Dxy[typesize] = TrackInfo->dxy[DInfo->rftk2_index[j]];
@@ -1597,9 +1617,7 @@ public:
             tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
             Dtrk3Y[typesize] = tk3Vec->Rapidity();
             Dtrk3P[typesize] = tk3Vec->P();
-            tk3Vec->Boost(-*boost);
-            Dtrk3thetastar[typesize] = tk3Vec->Angle(*D3Vec);
-            tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
+            Dtrk3thetastar[typesize] = calcThetaStar(*tk3Vec, -*boost, *D3Vec);
             Dtrk3Dz[typesize] = TrackInfo->dz[DInfo->rftk3_index[j]];
             Dtrk3DzError[typesize] = TrackInfo->dzerror[DInfo->rftk3_index[j]];
             Dtrk3Dxy[typesize] = TrackInfo->dxy[DInfo->rftk3_index[j]];
@@ -1664,9 +1682,7 @@ public:
             tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
             Dtrk3Y[typesize] = tk3Vec->Rapidity();
             Dtrk3P[typesize] = tk3Vec->P();
-            tk3Vec->Boost(-*boost);
-            Dtrk3thetastar[typesize] = tk3Vec->Angle(*D3Vec);
-            tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
+            Dtrk3thetastar[typesize] = calcThetaStar(*tk3Vec, -*boost, *D3Vec);
             Dtrk3Dz[typesize] = TrackInfo->dz[DInfo->rftk3_index[j]];
             Dtrk3DzError[typesize] = TrackInfo->dzerror[DInfo->rftk3_index[j]];
             Dtrk3Dxy[typesize] = TrackInfo->dxy[DInfo->rftk3_index[j]];
@@ -1698,9 +1714,7 @@ public:
             tk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk4_index[j]],TrackInfo->eta[DInfo->rftk4_index[j]],TrackInfo->phi[DInfo->rftk4_index[j]],DInfo->rftk4_MassHypo[j]);
             Dtrk4Y[typesize] = tk4Vec->Rapidity();
             Dtrk4P[typesize] = tk4Vec->P();
-            tk4Vec->Boost(-*boost);
-            Dtrk4thetastar[typesize] = tk4Vec->Angle(*D3Vec);
-            tk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk4_index[j]],TrackInfo->eta[DInfo->rftk4_index[j]],TrackInfo->phi[DInfo->rftk4_index[j]],DInfo->rftk4_MassHypo[j]);
+            Dtrk4thetastar[typesize] = calcThetaStar(*tk4Vec, -*boost, *D3Vec);
             Dtrk4Dz[typesize] = TrackInfo->dz[DInfo->rftk4_index[j]];
             Dtrk4DzError[typesize] = TrackInfo->dzerror[DInfo->rftk4_index[j]];
             Dtrk4Dxy[typesize] = TrackInfo->dxy[DInfo->rftk4_index[j]];
@@ -1729,31 +1743,23 @@ public:
         TVector3 *Sum3Vec = new TVector3();
         Sumboost->SetXYZ(SumVec->BoostVector().X(), SumVec->BoostVector().Y(), SumVec->BoostVector().Z());
         Sum3Vec->SetXYZ(SumVec->Vect().X(), SumVec->Vect().Y(), SumVec->Vect().Z());
-        tk1Vec->Boost(-*Sumboost);
-        Dtrk1thetastar_uf[typesize] = tk1Vec->Angle(*Sum3Vec);
-        tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
-        tk2Vec->Boost(-*Sumboost);
-        Dtrk2thetastar_uf[typesize] = tk2Vec->Angle(*Sum3Vec);
-        tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
+        Dtrk1thetastar_uf[typesize] = calcThetaStar(*tk1Vec, -*Sumboost, *Sum3Vec);
+        Dtrk2thetastar_uf[typesize] = calcThetaStar(*tk2Vec, -*Sumboost, *Sum3Vec);
+        
         if(DInfo->type[j]==1||DInfo->type[j]==2)
           {
           }
         else if(DInfo->type[j]==3||DInfo->type[j]==4)
           {
-            tk3Vec->Boost(-*Sumboost);
-            Dtrk3thetastar_uf[typesize] = tk3Vec->Angle(*Sum3Vec);
-            tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
+            Dtrk3thetastar_uf[typesize] = calcThetaStar(*tk3Vec, -*Sumboost, *Sum3Vec);
           }
         else if(DInfo->type[j]==5||DInfo->type[j]==6)
           {
-            tk3Vec->Boost(-*Sumboost);
-            Dtrk3thetastar_uf[typesize] = tk3Vec->Angle(*Sum3Vec);
-            tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
-            tk4Vec->Boost(-*Sumboost);
-            Dtrk4thetastar_uf[typesize] = tk4Vec->Angle(*Sum3Vec);
-            tk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk4_index[j]],TrackInfo->eta[DInfo->rftk4_index[j]],TrackInfo->phi[DInfo->rftk4_index[j]],DInfo->rftk4_MassHypo[j]);
+            Dtrk3thetastar_uf[typesize] = calcThetaStar(*tk3Vec, -*Sumboost, *Sum3Vec);
+            Dtrk4thetastar_uf[typesize] = calcThetaStar(*tk4Vec, -*Sumboost, *Sum3Vec);
           }
-
+        delete Sumboost;
+        delete Sum3Vec;
       }
     else if(DInfo->type[j]==7||DInfo->type[j]==8||DInfo->type[j]==9||DInfo->type[j]==10||DInfo->type[j]==11||DInfo->type[j]==12||DInfo->type[j]==13||DInfo->type[j]==14) //# modify for 7,8 Ds phi kkpi channel here
       {
@@ -1768,9 +1774,7 @@ public:
         tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
         Dtrk1Y[typesize] = tk1Vec->Rapidity();
         Dtrk1P[typesize] = tk1Vec->P();
-        tk1Vec->Boost(-*boost);
-        Dtrk1thetastar[typesize] = tk1Vec->Angle(*D3Vec);
-        tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
+        Dtrk1thetastar[typesize] = calcThetaStar(*tk1Vec, -*boost, *D3Vec);
         Dtrk1Dz[typesize] = TrackInfo->dz[DInfo->rftk1_index[j]];
         Dtrk1DzError[typesize] = TrackInfo->dzerror[DInfo->rftk1_index[j]];
         Dtrk1Dxy[typesize] = TrackInfo->dxy[DInfo->rftk1_index[j]];
@@ -1802,9 +1806,7 @@ public:
         tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
         Dtrk2Y[typesize] = tk2Vec->Rapidity();
         Dtrk2P[typesize] = tk2Vec->P();
-        tk2Vec->Boost(-*boost);
-        Dtrk2thetastar[typesize] = tk2Vec->Angle(*D3Vec);
-        tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
+        Dtrk2thetastar[typesize] = calcThetaStar(*tk2Vec, -*boost, *D3Vec);
         Dtrk2Dz[typesize] = TrackInfo->dz[DInfo->rftk2_index[j]];
         Dtrk2DzError[typesize] = TrackInfo->dzerror[DInfo->rftk2_index[j]];
         Dtrk2Dxy[typesize] = TrackInfo->dxy[DInfo->rftk2_index[j]];
@@ -1836,9 +1838,7 @@ public:
         tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
         Dtrk3Y[typesize] = tk3Vec->Rapidity();
         Dtrk3P[typesize] = tk3Vec->P();
-        tk3Vec->Boost(-*boost);
-        Dtrk3thetastar[typesize] = tk3Vec->Angle(*D3Vec);
-        tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
+        Dtrk3thetastar[typesize] = calcThetaStar(*tk3Vec, -*boost, *D3Vec);
         Dtrk3Dz[typesize] = TrackInfo->dz[DInfo->rftk3_index[j]];
         Dtrk3DzError[typesize] = TrackInfo->dzerror[DInfo->rftk3_index[j]];
         Dtrk3Dxy[typesize] = TrackInfo->dxy[DInfo->rftk3_index[j]];
@@ -1898,9 +1898,7 @@ public:
         restk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk1_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk1_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk1_index[j]],DInfo->tktkRes_rftk1_MassHypo[j]);
         DRestrk1Y[typesize] = restk1Vec->Rapidity();
         DRestrk1P[typesize] = restk1Vec->P();
-        restk1Vec->Boost(-*boost);
-        DRestrk1thetastar[typesize] = restk1Vec->Angle(*D3Vec);
-        restk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk1_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk1_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk1_index[j]],DInfo->tktkRes_rftk1_MassHypo[j]);
+        DRestrk1thetastar[typesize] = calcThetaStar(*restk1Vec, -*boost, *D3Vec);
         DRestrk1Dz[typesize] = TrackInfo->dz[DInfo->tktkRes_rftk1_index[j]];
         DRestrk1DzError[typesize] = TrackInfo->dzerror[DInfo->tktkRes_rftk1_index[j]];
         DRestrk1Dxy[typesize] = TrackInfo->dxy[DInfo->tktkRes_rftk1_index[j]];
@@ -1922,9 +1920,7 @@ public:
         restk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk2_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk2_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk2_index[j]],DInfo->tktkRes_rftk2_MassHypo[j]);
         DRestrk2Y[typesize] = restk2Vec->Rapidity();
         DRestrk2P[typesize] = restk2Vec->P();
-        restk2Vec->Boost(-*boost);
-        DRestrk2thetastar[typesize] = restk2Vec->Angle(*D3Vec);
-        restk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk2_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk2_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk2_index[j]],DInfo->tktkRes_rftk2_MassHypo[j]);
+        DRestrk2thetastar[typesize] = calcThetaStar(*restk2Vec, -*boost, *D3Vec);
         DRestrk2Dz[typesize] = TrackInfo->dz[DInfo->tktkRes_rftk2_index[j]];
         DRestrk2DzError[typesize] = TrackInfo->dzerror[DInfo->tktkRes_rftk2_index[j]];
         DRestrk2Dxy[typesize] = TrackInfo->dxy[DInfo->tktkRes_rftk2_index[j]];
@@ -2019,6 +2015,9 @@ public:
         tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
         DtktkRes_angleToTrk1[typesize] = tktkRes4Vec->Angle(tk1Vec->Vect());
 
+        delete DisSvResVtx;
+        delete tktkRes4Vec;
+
         DtktkRes_ptAsymToTrk1[typesize] = (DInfo->tktkRes_pt[j]-TrackInfo->pt[DInfo->rftk2_index[j]])/(DInfo->tktkRes_pt[j]+TrackInfo->pt[DInfo->rftk2_index[j]]);
         DtktkRes_unfitter_ptAsymToTrk1[typesize] = (DInfo->tktkRes_unfitted_pt[j]-TrackInfo->pt[DInfo->rftk2_index[j]])/(DInfo->tktkRes_unfitted_pt[j]+TrackInfo->pt[DInfo->rftk2_index[j]]);
 
@@ -2030,9 +2029,7 @@ public:
             restk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk3_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk3_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk3_index[j]],DInfo->tktkRes_rftk3_MassHypo[j]);
             DRestrk3Y[typesize] = restk3Vec->Rapidity();
             DRestrk3P[typesize] = restk3Vec->P();
-            restk3Vec->Boost(-*boost);
-            DRestrk3thetastar[typesize] = restk3Vec->Angle(*D3Vec);
-            restk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk3_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk3_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk3_index[j]],DInfo->tktkRes_rftk3_MassHypo[j]);
+            DRestrk3thetastar[typesize] = calcThetaStar(*restk3Vec, -*boost, *D3Vec);
             DRestrk3Dz[typesize] = TrackInfo->dz[DInfo->tktkRes_rftk3_index[j]];
             DRestrk3DzError[typesize] = TrackInfo->dzerror[DInfo->tktkRes_rftk3_index[j]];
             DRestrk3Dxy[typesize] = TrackInfo->dxy[DInfo->tktkRes_rftk3_index[j]];
@@ -2050,9 +2047,7 @@ public:
             restk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk4_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk4_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk4_index[j]],DInfo->tktkRes_rftk4_MassHypo[j]);
             DRestrk4Y[typesize] = restk4Vec->Rapidity();
             DRestrk4P[typesize] = restk4Vec->P();
-            restk4Vec->Boost(-*boost);
-            DRestrk4thetastar[typesize] = restk4Vec->Angle(*D3Vec);
-            restk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk4_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk4_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk4_index[j]],DInfo->tktkRes_rftk4_MassHypo[j]);
+            DRestrk4thetastar[typesize] = calcThetaStar(*restk4Vec, -*boost, *D3Vec);
             DRestrk4Dz[typesize] = TrackInfo->dz[DInfo->tktkRes_rftk4_index[j]];
             DRestrk4DzError[typesize] = TrackInfo->dzerror[DInfo->tktkRes_rftk4_index[j]];
             DRestrk4Dxy[typesize] = TrackInfo->dxy[DInfo->tktkRes_rftk4_index[j]];
@@ -2088,33 +2083,20 @@ public:
         Sumboost->SetXYZ(SumVec->BoostVector().X(), SumVec->BoostVector().Y(), SumVec->BoostVector().Z());
         Sum3Vec->SetXYZ(SumVec->Vect().X(), SumVec->Vect().Y(), SumVec->Vect().Z());
 
-        tk1Vec->Boost(-*Sumboost);
-        Dtrk1thetastar_uf[typesize] = tk1Vec->Angle(*Sum3Vec);
-        tk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk1_index[j]],TrackInfo->eta[DInfo->rftk1_index[j]],TrackInfo->phi[DInfo->rftk1_index[j]],DInfo->rftk1_MassHypo[j]);
-        tk2Vec->Boost(-*Sumboost);
-        Dtrk2thetastar_uf[typesize] = tk2Vec->Angle(*Sum3Vec);
-        tk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk2_index[j]],TrackInfo->eta[DInfo->rftk2_index[j]],TrackInfo->phi[DInfo->rftk2_index[j]],DInfo->rftk2_MassHypo[j]);
-        tk3Vec->Boost(-*Sumboost);
-        Dtrk3thetastar_uf[typesize] = tk3Vec->Angle(*Sum3Vec);
-        tk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->rftk3_index[j]],TrackInfo->eta[DInfo->rftk3_index[j]],TrackInfo->phi[DInfo->rftk3_index[j]],DInfo->rftk3_MassHypo[j]);
+        Dtrk1thetastar_uf[typesize] = calcThetaStar(*tk1Vec, -*Sumboost, *Sum3Vec);
+        Dtrk2thetastar_uf[typesize] = calcThetaStar(*tk2Vec, -*Sumboost, *Sum3Vec);
+        Dtrk3thetastar_uf[typesize] = calcThetaStar(*tk3Vec, -*Sumboost, *Sum3Vec);
 
-        restk1Vec->Boost(-*Sumboost);
-        DRestrk1thetastar_uf[typesize] = restk1Vec->Angle(*Sum3Vec);
-        restk1Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk1_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk1_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk1_index[j]],DInfo->tktkRes_rftk1_MassHypo[j]);
-        restk2Vec->Boost(-*Sumboost);
-        DRestrk2thetastar_uf[typesize] = restk2Vec->Angle(*Sum3Vec);
-        restk2Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk2_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk2_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk2_index[j]],DInfo->tktkRes_rftk2_MassHypo[j]);
+        DRestrk1thetastar_uf[typesize] = calcThetaStar(*restk1Vec, -*Sumboost, *Sum3Vec);
+        DRestrk2thetastar_uf[typesize] = calcThetaStar(*restk2Vec, -*Sumboost, *Sum3Vec);
 
         if(DInfo->type[j]==11||DInfo->type[j]==12)
           {
-            restk3Vec->Boost(-*Sumboost);
-            DRestrk3thetastar_uf[typesize] = restk3Vec->Angle(*Sum3Vec);
-            restk3Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk3_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk3_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk3_index[j]],DInfo->tktkRes_rftk3_MassHypo[j]);
-            restk4Vec->Boost(-*Sumboost);
-            DRestrk4thetastar_uf[typesize] = restk4Vec->Angle(*Sum3Vec);
-            restk4Vec->SetPtEtaPhiM(TrackInfo->pt[DInfo->tktkRes_rftk4_index[j]],TrackInfo->eta[DInfo->tktkRes_rftk4_index[j]],TrackInfo->phi[DInfo->tktkRes_rftk4_index[j]],DInfo->tktkRes_rftk4_MassHypo[j]);
+            DRestrk3thetastar_uf[typesize] = calcThetaStar(*restk3Vec, -*Sumboost, *Sum3Vec);
+            DRestrk4thetastar_uf[typesize] = calcThetaStar(*restk4Vec, -*Sumboost, *Sum3Vec);
           }
-
+        delete Sumboost;
+        delete Sum3Vec;
       } // end if Dinfo.type =7~14
 
     DMaxTkPt[typesize] = max(Dtrk1Pt[typesize], max(Dtrk2Pt[typesize], max(Dtrk3Pt[typesize], max(Dtrk4Pt[typesize], max(DRestrk1Pt[typesize], max(DRestrk2Pt[typesize], max(DRestrk3Pt[typesize], DRestrk4Pt[typesize])))))));
@@ -2865,6 +2847,16 @@ public:
               }
           }
       }//if(!real)
+    delete tk1Vec;
+    delete tk2Vec;
+    delete tk3Vec;
+    delete tk4Vec;
+    delete restk1Vec;
+    delete restk2Vec;
+    delete restk3Vec;
+    delete restk4Vec;
+    delete resSumVec;
+    delete SumVec;
   }//fillDtree
 
   int getrftkpdgId(int rftk_index, TrackInfoBranches *TrackInfo, GenInfoBranches *GenInfo) {

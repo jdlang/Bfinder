@@ -354,7 +354,7 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
   }else{ 
     thePrimaryV = Vertex(beamSpot.position(), beamSpot.covariance3D());
- } 
+  }
   RefVtx = thePrimaryV.position();
 
   EvtInfo.PVx     = thePrimaryV.position().x();
@@ -1102,12 +1102,12 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Dntuple->makeDNtuple(isDchannel, Dtypesize, REAL, fillZeroCandEvt, doDntupleSkim_, &EvtInfo, &VtxInfo, &TrackInfo, &DInfo, &GenInfo, ntD1, ntD2, ntD3, ntD4, ntD5, ntD6, ntD7, ntD8);
     if(!REAL) Dntuple->fillDGenTree(ntGen, &GenInfo);
   }
-
 }
 
 // ------------ method called once each job just after ending the event loop  ------------{{{
 void Dfinder::endJob()
 {
+  delete Dntuple;
 }
 
 // ------------ method called when starting to processes a run  ------------
@@ -1762,6 +1762,7 @@ void Dfinder::BranchOutNTk(//input 2~4 tracks
         ParticleMass tktkResMass = tktkRes_mass;
         MultiTrackKinematicConstraint *tktkResConstraint = new TwoTrackMassKinematicConstraint(tktkResMass);
         tktk_VFT = kcv_tktk_fitter.fit(tktk_candidate, tktkResConstraint);
+        delete tktkResConstraint;
       }
       else tktk_VFT = tktk_fitter.fit(tktk_candidate);
     }
