@@ -1130,8 +1130,7 @@ public:
             Gtk2phi[gsize] = GenInfo->phi[GenInfo->da2[j]];
             Gtk2pdgId[gsize] = GenInfo->pdgId[GenInfo->da2[j]];
             bGen->SetPtEtaPhiM(GenInfo->pt[GenInfo->da2[j]],GenInfo->eta[GenInfo->da2[j]],GenInfo->phi[GenInfo->da2[j]],GenInfo->mass[GenInfo->da2[j]]);
-// FIXME: Should this be Gtk2y ?? <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            Gtk1y[gsize] = bGen->Rapidity();
+            Gtk2y[gsize] = bGen->Rapidity();
             
             GRestk1pt[gsize] = GenInfo->pt[GenInfo->da1[GenInfo->da1[j]]];
             GRestk1eta[gsize] = GenInfo->eta[GenInfo->da1[GenInfo->da1[j]]];
