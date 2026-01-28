@@ -1355,6 +1355,7 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // ------------ method called once each job just after ending the event loop  ------------{{{
     void Dfinder::endJob()
     {
+      delete Dntuple;
     }
 
     // ------------ method called when starting to processes a run  ------------
@@ -2045,6 +2046,7 @@ void Dfinder::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                             ParticleMass tktkResMass = tktkRes_mass;
                             MultiTrackKinematicConstraint *tktkResConstraint = new TwoTrackMassKinematicConstraint(tktkResMass);
                             tktk_VFT = kcv_tktk_fitter.fit(tktk_candidate, tktkResConstraint);
+                            delete tktkResConstraint;
                         }
                         else tktk_VFT = tktk_fitter.fit(tktk_candidate);
                     }
